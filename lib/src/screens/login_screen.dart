@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:chatapp/src/widgets/widgets.dart';
+
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
@@ -18,6 +20,7 @@ class LoginScreen extends StatelessWidget {
               'Términos y condiciones de uso',
               style: TextStyle(fontWeight: FontWeight.w200),
             ),
+            const SizedBox(height: 5),
           ],
         ),
       ),
@@ -53,14 +56,16 @@ class __LoginFormState extends State<_LoginForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(top: 40),
+      padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          const TextField(),
-          const TextField(),
-          ElevatedButton(
-            onPressed: () {},
-            child: null,
-          )
+          CustomInput(),
+          // TODO: Create Button
+          // ElevatedButton(
+          //   onPressed: () {},
+          //   child: null,
+          // ),
         ],
       ),
     );
