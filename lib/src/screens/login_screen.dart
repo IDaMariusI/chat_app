@@ -13,33 +13,14 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _LoginLogo(),
+            const LoginLogo(),
             _LoginForm(),
-            _LoginLabels(),
+            const LoginLabels(),
             const Text(
               'Términos y condiciones de uso',
               style: TextStyle(fontWeight: FontWeight.w200),
             ),
-            const SizedBox(height: 5),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _LoginLogo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.only(top: 50),
-        width: 170,
-        child: const Column(
-          children: [
-            Image(image: AssetImage('assets/tag-logo.png')),
-            SizedBox(height: 20),
-            Text('Messenger', style: TextStyle(fontSize: 30)),
+            const SizedBox(height: 1),
           ],
         ),
       ),
@@ -53,6 +34,9 @@ class _LoginForm extends StatefulWidget {
 }
 
 class __LoginFormState extends State<_LoginForm> {
+  final emailCtrl = TextEditingController();
+  final passCtrl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,40 +44,24 @@ class __LoginFormState extends State<_LoginForm> {
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          CustomInput(),
-          // TODO: Create Button
-          // ElevatedButton(
-          //   onPressed: () {},
-          //   child: null,
-          // ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LoginLabels extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          const Text(
-            '¿No tienes cuenta?',
-            style: TextStyle(
-              color: Colors.black54,
-              fontSize: 15,
-              fontWeight: FontWeight.w300,
-            ),
+          CustomInput(
+            hintText: 'Email',
+            icon: Icons.mail_outline,
+            keyboardType: TextInputType.emailAddress,
+            textController: emailCtrl,
           ),
-          const SizedBox(height: 10),
-          Text(
-            '¡Crea una ahora!',
-            style: TextStyle(
-              color: Colors.blue[600],
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          CustomInput(
+            hintText: 'Password',
+            icon: Icons.lock_outline,
+            isPassword: true,
+            textController: passCtrl,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              print(emailCtrl.text);
+              print(passCtrl.text);
+            },
+            child: null,
           ),
         ],
       ),
