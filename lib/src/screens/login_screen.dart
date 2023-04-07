@@ -56,12 +56,9 @@ class __LoginFormState extends State<_LoginForm> {
             isPassword: true,
             textController: passCtrl,
           ),
-          ElevatedButton(
-            onPressed: () {
-              print(emailCtrl.text);
-              print(passCtrl.text);
-            },
-            child: null,
+          BlueButton(
+            buttonText: 'Ingresar',
+            onPressed: () {},
           ),
         ],
       ),
