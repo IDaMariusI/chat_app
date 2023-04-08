@@ -17,9 +17,13 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const LoginLogo(),
+                const LoginLogo(title: 'Messenger'),
                 _LoginForm(),
-                const LoginLabels(),
+                const LoginLabels(
+                  route: 'register',
+                  subTitle: '¡Crea una cuenta ahora!',
+                  title: '¿No tienes cuenta?',
+                ),
                 const Text(
                   'Términos y condiciones de uso',
                   style: TextStyle(fontWeight: FontWeight.w200),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class LoginLogo extends StatelessWidget {
-  const LoginLogo({super.key});
+  final String title;
+
+  const LoginLogo({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -9,11 +11,11 @@ class LoginLogo extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(top: 50),
         width: 170,
-        child: const Column(
+        child: Column(
           children: [
-            Image(image: AssetImage('assets/tag-logo.png')),
-            SizedBox(height: 20),
-            Text('Messenger', style: TextStyle(fontSize: 30)),
+            const Image(image: AssetImage('assets/tag-logo.png')),
+            const SizedBox(height: 20),
+            Text(title, style: const TextStyle(fontSize: 30)),
           ],
         ),
       ),

@@ -1,28 +1,37 @@
 import 'package:flutter/material.dart';
 
 class LoginLabels extends StatelessWidget {
-  const LoginLabels({super.key});
+  final String route;
+  final String subTitle;
+  final String title;
+
+  const LoginLabels({super.key, required this.route, required this.subTitle, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          const Text(
-            '¿No tienes cuenta?',
-            style: TextStyle(
+          Text(
+            title,
+            style: const TextStyle(
               color: Colors.black54,
               fontSize: 15,
               fontWeight: FontWeight.w300,
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            '¡Crea una ahora!',
-            style: TextStyle(
-              color: Colors.blue[600],
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          GestureDetector(
+            onTap: () {
+              Navigator.pushReplacementNamed(context, route);
+            },
+            child: Text(
+              subTitle,
+              style: TextStyle(
+                color: Colors.blue[600],
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
