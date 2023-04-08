@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'package:chatapp/src/models/user.dart';
 
 class UsersScreen extends StatefulWidget {
@@ -15,6 +17,9 @@ class _UsersScreenState extends State<UsersScreen> {
     User(online: false, email: 'test2@test.com', name: 'Melissa', uid: '2'),
     User(online: true, email: 'test3@test.com', name: 'Martín', uid: '3'),
   ];
+
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +40,50 @@ class _UsersScreenState extends State<UsersScreen> {
           ),
         ],
       ),
-      body: ListView.separated(
-        physics: const BouncingScrollPhysics(),
-        itemBuilder: (_, i) => ListTile(
-          title: Text(users[i].name),
-          leading: CircleAvatar(child: Text(users[i].name.substring(0, 2))),
-          trailing: Container(
-            height: 10,
-            width: 10,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: users[i].online ? Colors.green[300] : Colors.red),
-          ),
+      body: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        onRefresh: _loadUsers,
+        header: WaterDropHeader(
+          complete: Icon(Icons.check, color: Colors.blue[400]),
+          waterDropColor: Colors.blue[400] as Color,
         ),
-        separatorBuilder: (_, i) => const Divider(),
-        itemCount: users.length,
+        child: _usersListView(),
       ),
     );
+  }
+
+  ListView _usersListView() {
+    return ListView.separated(
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (_, i) => _userListTile(users[i]),
+      itemCount: users.length,
+      separatorBuilder: (_, i) => const Divider(),
+    );
+  }
+
+  ListTile _userListTile(User user) {
+    return ListTile(
+      title: Text(user.name),
+      subtitle: Text(user.email),
+      leading: CircleAvatar(
+        backgroundColor: Colors.blue[100],
+        child: Text(user.name.substring(0, 2)),
+      ),
+      trailing: Container(
+        height: 10,
+        width: 10,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: user.online ? Colors.green[300] : Colors.red),
+      ),
+    );
+  }
+
+  _loadUsers() async {
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
   }
 }
