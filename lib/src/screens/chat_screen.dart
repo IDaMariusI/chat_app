@@ -14,6 +14,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
+  bool _isWriting = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,8 +75,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 decoration: const InputDecoration.collapsed(
                   hintText: 'Enviar mensaje',
                 ),
-                onChanged: (String text) {
-                  // TODO: cuando hay un valor para poder postear
+                onChanged: (text) {
+                  setState(() {
+                    if (text.trim().isNotEmpty) {
+                      _isWriting = true;
+                    } else {
+                      _isWriting = false;
+                    }
+                  });
                 },
               ),
             ),
@@ -83,14 +91,23 @@ class _ChatScreenState extends State<ChatScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Platform.isIOS
                   ? CupertinoButton(
+                      onPressed: _isWriting
+                          ? () => _handleSubmit(_textController.text.trim())
+                          : null,
                       child: const Text('Enviar'),
-                      onPressed: () {},
                     )
                   : Container(
                       margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(Icons.send, color: Colors.blue[400]),
+                      child: IconTheme(
+                        data: IconThemeData(color: Colors.blue[400]),
+                        child: IconButton(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          icon: const Icon(Icons.send),
+                          onPressed: _isWriting
+                              ? () => _handleSubmit(_textController.text.trim())
+                              : null,
+                        ),
                       ),
                     ),
             ),
@@ -101,8 +118,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _handleSubmit(String text) {
-    print(text);
     _textController.clear();
     _focusNode.requestFocus();
+
+    setState(() {
+      _isWriting = false;
+    });
   }
 }
