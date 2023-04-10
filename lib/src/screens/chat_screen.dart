@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:chatapp/src/widgets/widgets.dart';
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -15,6 +17,12 @@ class _ChatScreenState extends State<ChatScreen> {
   final _focusNode = FocusNode();
 
   bool _isWriting = false;
+  List<ChatMessage> _messages = [
+    ChatMessage(textMessage: 'Hola Mundo', uid: '123'),
+    ChatMessage(textMessage: 'Hola Mundo', uid: '123dfgh'),
+    ChatMessage(textMessage: 'Hola Mundo', uid: '123'),
+    ChatMessage(textMessage: 'Hola Mundo', uid: '123 dfg'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +51,10 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Flexible(
               child: ListView.builder(
+                itemBuilder: (_, i) => _messages[i],
+                itemCount: _messages.length,
                 physics: const BouncingScrollPhysics(),
                 reverse: true,
-                itemBuilder: (_, i) => Text('$i'),
               ),
             ),
             const Divider(height: 1),
@@ -120,6 +129,9 @@ class _ChatScreenState extends State<ChatScreen> {
   _handleSubmit(String text) {
     _textController.clear();
     _focusNode.requestFocus();
+    
+    final newMessage = ChatMessage(textMessage: text, uid: '123');
+    _messages.insert(0, newMessage);
 
     setState(() {
       _isWriting = false;
