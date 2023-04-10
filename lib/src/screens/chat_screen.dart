@@ -12,17 +12,12 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
 
   bool _isWriting = false;
-  List<ChatMessage> _messages = [
-    ChatMessage(textMessage: 'Hola Mundo', uid: '123'),
-    ChatMessage(textMessage: 'Hola Mundo', uid: '123dfgh'),
-    ChatMessage(textMessage: 'Hola Mundo', uid: '123'),
-    ChatMessage(textMessage: 'Hola Mundo', uid: '123 dfg'),
-  ];
+  final List<ChatMessage> _messages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +53,6 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             const Divider(height: 1),
-            // TODO: Caja de Texto
             Container(
               color: Colors.white,
               height: 100,
@@ -127,14 +121,35 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _handleSubmit(String text) {
+    if(text.isEmpty) return;
+
     _textController.clear();
     _focusNode.requestFocus();
-    
-    final newMessage = ChatMessage(textMessage: text, uid: '123');
+
+    final newMessage = ChatMessage(
+      animationController: AnimationController(
+        duration: const Duration(milliseconds: 200),
+        vsync: this,
+      ),
+      textMessage: text,
+      uid: '123',
+    );
     _messages.insert(0, newMessage);
+    newMessage.animationController.forward();
 
     setState(() {
       _isWriting = false;
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: Off del socket
+
+    for(ChatMessage message in _messages){
+      message.animationController.dispose();
+    }
+
+    super.dispose();
   }
 }
